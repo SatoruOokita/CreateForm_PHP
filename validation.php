@@ -30,12 +30,13 @@ function validation($request)
     if (empty($request['contact']) || 200 < mb_strlen($request['contact'])) {
         $errors[] = '「問い合わせ内容」は必須です。また、200文字以内で入力してください。';   // []を付けることで配列に値をつけることができる。
     }
-    return $errors;
-
+    
     // 性別が空だったら、「性別は必須」と表示させる
     // emptyだと、値が「0」でもtrueを吐き出すためissetを用いる
-    if (isset($request['$gender'])) {
+    if (!isset($request['gender'])) {
         $errors[] = '「性別」は必須です。';
+    } elseif(empty($request['gender'])){
+        $errors[] = '性別が空です';
     }
 
     // 年齢が空だったら、「年齢は必須」と表示させる
@@ -48,4 +49,5 @@ function validation($request)
     if (empty($request['caution'])) {
         $errors[] = '「注意事項」をご確認の上、チェックを入れてください。';
     }
+    return $errors;
 }

@@ -80,12 +80,12 @@ if (!empty($_POST['btn_submit'])) {
                                                         } ?>">
             <br>
             メールアドレス：
-            <input type="text" name="email" value="<?php if (!empty($_POST['email'])) {
+            <input type="email" name="email" value="<?php if (!empty($_POST['email'])) {
                                                         echo h($_POST['email']);
                                                     } ?>">
             <br>
             ホームページ
-            <input type="text" name="url" value="<?php if (!empty($_POST['url'])) {
+            <input type="url" name="url" value="<?php if (!empty($_POST['url'])) {
                                                     echo h($_POST['url']);
                                                 } ?>">
             <br>
@@ -109,11 +109,7 @@ if (!empty($_POST['btn_submit'])) {
             </select>
             <br>
             お問い合わせ内容
-            <textarea name="contact" placeholder="200字まで" maxlength="200">
-            <?php if (!empty($_POST['contact'])) {
-                echo h($_POST['contact']);
-            } ?>
-            </textarea>
+            <textarea name="contact" placeholder="200字まで" maxlength="200"><?php if (!empty($_POST['contact'])) {echo h($_POST['contact']);} ?></textarea>
             <br>
             <input type="checkbox" name="caution" value="1">注意事項にチェックする。
             <br>
