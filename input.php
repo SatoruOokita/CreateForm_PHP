@@ -1,9 +1,21 @@
 <?php
-if (!empty($_POST)) {
-    echo '<pre>';
-    var_dump($_POST);
-    echo '</pre>';
+// クリックジャッキング対策のコード
+// サーバーに書く方法とPHPに書く方法とがある。
+header('X-FRAME-OPTIONS:DENY');
+
+// if (!empty($_POST)) {
+//     echo '<pre>';
+//     var_dump($_POST);
+//     echo '</pre>';
+// }
+
+// XSS対策のhtmlエスケープ用のコード（サニタイズ）
+// htmlspecialchars関数は、記述が冗長なためユーザー定義関数を作成して使いまわす。
+function h($str){
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
+
+
 
 // 表示を切り替えるためのif文
 $pageFlag = 0;
@@ -34,10 +46,10 @@ if(!empty($_POST['btn_submit'])){
         <h2>入力画面</h2>
         <form method="POST" action="input.php">
         氏名：
-        <input type="text" name="your_name" value="<?php if(!empty($_POST['your_name'])){echo $_POST['your_name'] ;}?>">
+        <input type="text" name="your_name" value="<?php if(!empty($_POST['your_name'])){echo h($_POST['your_name']) ;}?>">
         <br>
         メールアドレス：
-        <input type="email" name="email" value="<?php if(!empty($_POST['email'])){echo $_POST['email'] ;}?>">
+        <input type="email" name="email" value="<?php if(!empty($_POST['email'])){echo h($_POST['email']) ;}?>">
         <br>
         <p>※ボタンにname属性とvalue属性を入れることで、KeyとValueの関係になりbtn_confirmに値が入っていれば、ボタンが押されたということが分かり、表示を切り替える条件に使うことができる。</p>
         <input type="submit" name="btn_confirm" value="確認画面へ">
@@ -47,17 +59,17 @@ if(!empty($_POST['btn_submit'])){
         <h2>確認画面</h2>
         <form method="POST" action="input.php">
         氏名：
-        <?php echo $_POST['your_name'] ; ?>
+        <?php echo h($_POST['your_name']) ; ?>
         <br>
         メールアドレス：
-        <?php echo $_POST['email'] ; ?>
+        <?php echo h($_POST['email']) ; ?>
         <br>
         <p>※POST通信は、一度通信を行うとデータが消えてしまうためtype="hidden"のinputタグを用意し、value属性に値を表示しているPHP文を貼り付けておく。</p>
         <p>hiddenで設定しておくと、表には見えないけどデータとして保持している状態にできる。</p>
         <input type="submit" name="back" value="戻る">
         <input type="submit" name="btn_submit" value="送信する">
-        <input type="hidden" name="your_name" value="<?php echo $_POST['your_name'] ; ?>">
-        <input type="hidden" name="email" value="<?php echo $_POST['email'] ; ?>">
+        <input type="hidden" name="your_name" value="<?php echo h($_POST['your_name']) ; ?>">
+        <input type="hidden" name="email" value="<?php echo h($_POST['email']) ; ?>">
 
         <?php endif; ?>
     <?php if ($pageFlag === 2) : ?>
